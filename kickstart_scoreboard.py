@@ -1,14 +1,17 @@
 import requests
 import json
 from base64 import urlsafe_b64encode, urlsafe_b64decode
-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 user_scores = []
 full_scoreboard_size = 0
 num_consecutive_users = 200
-for i in range(16):
-    url = "https://codejam.googleapis.com/scoreboard/0000000000050ff2/poll?p=%s" % urlsafe_b64encode(
+for i in range(32):
+    url = "https://codejam.googleapis.com/scoreboard/0000000000050edb/poll?p=%s" % urlsafe_b64encode(
         '{"min_rank":%d,"num_consecutive_users":%d}' % (i * num_consecutive_users + 1, num_consecutive_users))
+    print "Attempting to fetch data from url: " + url
     res = requests.get(url, headers={})
     if res.ok:
         raw_text = res.content
@@ -44,4 +47,4 @@ for i in range(16):
 
 print len(user_scores)
 with open("kickstart_user_scores.json", "w") as fo:
-    json.dump(user_scores, fo，ensure_ascii=False)
+    json.dump(user_scores, fo, ensure_ascii=False)
